@@ -1,0 +1,5 @@
+#!/bin/bash
+
+./mvnw clean package -DskipTests
+mv target/*-jar-with-dependencies.jar HTNShark.jar
+rm -rf target

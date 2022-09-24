@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!HTNShark.jar
 *.war
 *.nar
 *.ear

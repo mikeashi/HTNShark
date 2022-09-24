@@ -30,6 +30,13 @@ public class EngineRunner {
      * @throws Exception
      */
     public static void generateDomain(String domainFileName) throws Exception {
+        // delete old domain
+        File folder = new File("src/main/java/com/ashi/mike/domain");
+        for (File file : folder.listFiles()) {
+            if (!file.isDirectory()) {
+                file.delete();
+            }
+        }
         String domainFilePath = "htn/"+domainFileName;
         File domainFile = new File(domainFilePath);
         FileInputStream domainStream = new FileInputStream(domainFile);
@@ -53,9 +60,12 @@ public class EngineRunner {
      */
     private static void generateProblem(String problem) throws Exception {
         String problemFilePath = "htn/problem";
-        BufferedWriter dest = new BufferedWriter(new FileWriter(problemFilePath));
-        dest.write(problem);
-        dest.close();
+        // if no problem is given use the existing problem file
+        if(problem != null){
+            BufferedWriter dest = new BufferedWriter(new FileWriter(problemFilePath));
+            dest.write(problem);
+            dest.close();
+        }
         File problemFile = new File(problemFilePath);
         FileInputStream problemStream = new FileInputStream(problemFile);
         InternalDomain domain = new InternalDomain(problemStream,1);
@@ -95,6 +105,6 @@ public class EngineRunner {
 
         // call method and return plans
         Method getPlans = dynamicClass.getDeclaredMethod("getPlans");
-        return (LinkedList<Plan>) getPlans.invoke(null);
+        return (LinkedList<Plan>) getPlans.invoke(dynamicClass.newInstance());
     } 
 }
